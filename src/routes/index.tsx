@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import heroArtwork from "@/assets/hero-artwork.jpg";
 import workMonolith from "@/assets/work-monolith.jpg";
 import workPlains from "@/assets/work-plains.jpg";
@@ -81,7 +81,8 @@ function Index() {
           Art<span className="italic text-accent">Space</span>
         </a>
         <div className="hidden md:flex gap-9 text-[11px] font-medium uppercase tracking-[0.22em]">
-          {["Gallery", "Artists", "Studios", "Hire"].map((l) => (
+          <Link to="/gallery" className="link-underline hover:text-accent transition-colors">Gallery</Link>
+          {["Artists", "Studios", "Hire"].map((l) => (
             <a key={l} href={`#${l.toLowerCase()}`} className="link-underline hover:text-accent transition-colors">
               {l}
             </a>
