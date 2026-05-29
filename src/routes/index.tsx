@@ -16,6 +16,63 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+const RECENT_ARTWORKS = [
+  { img: artFigure, title: "Figure in Ochre", artist: "L. Marin", likes: "2.4k", views: "18.2k", tag: "Painting" },
+  { img: artCollage, title: "Paper Memory", artist: "K. Aoki", likes: "1.8k", views: "12.6k", tag: "Mixed Media" },
+  { img: artBronze, title: "Untitled (Bronze 04)", artist: "R. Okafor", likes: "3.1k", views: "22.9k", tag: "Sculpture" },
+  { img: artDoorway, title: "Doorway, Lisbon", artist: "M. Costa", likes: "1.2k", views: "9.4k", tag: "Photography" },
+  { img: artMonolith, title: "Monolith", artist: "S. Vance", likes: "4.6k", views: "31.7k", tag: "Painting" },
+  { img: artPlains, title: "Plains at Dusk", artist: "E. Lindqvist", likes: "2.0k", views: "15.1k", tag: "Painting" },
+  { img: artQuietude, title: "Quietude", artist: "J. Disingana", likes: "5.8k", views: "44.3k", tag: "Digital" },
+  { img: artHero, title: "Inner Light", artist: "A. Petrov", likes: "3.4k", views: "27.0k", tag: "Concept" },
+];
+
+function HorizontalRail({ title, subtitle, items }: { title: string; subtitle: string; items: typeof RECENT_ARTWORKS }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (dir: number) => {
+    ref.current?.scrollBy({ left: dir * 660, behavior: "smooth" });
+  };
+  return (
+    <section className="mx-auto max-w-[1400px] px-4 lg:px-6 pb-16">
+      <div className="flex items-end justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight">{title}</h2>
+          <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">{subtitle}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => scroll(-1)} aria-label="Scroll left" className="btn btn-ghost h-9 w-9 p-0"><ChevronLeft className="h-4 w-4" /></button>
+          <button onClick={() => scroll(1)} aria-label="Scroll right" className="btn btn-ghost h-9 w-9 p-0"><ChevronRight className="h-4 w-4" /></button>
+        </div>
+      </div>
+
+      <div
+        ref={ref}
+        className="rail flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 lg:-mx-6 lg:px-6 snap-x snap-mandatory scroll-smooth"
+      >
+        {items.map((a, i) => (
+          <article
+            key={`${title}-${i}`}
+            className="rail-card group snap-start shrink-0"
+          >
+            <div className="rail-card-media">
+              <img src={a.img} alt={a.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]" />
+              <span className="absolute top-3 left-3 badge bg-[var(--color-surface)]/85 backdrop-blur-md text-[var(--color-foreground)] border border-[var(--color-border)]">{a.tag}</span>
+              <div className="absolute inset-x-0 bottom-0 p-3 flex items-center gap-3 text-[11px] text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 bg-gradient-to-t from-black/70 to-transparent">
+                <span className="inline-flex items-center gap-1"><Heart className="h-3 w-3" /> {a.likes}</span>
+                <span className="inline-flex items-center gap-1"><Eye className="h-3 w-3" /> {a.views}</span>
+              </div>
+            </div>
+            <div className="px-1 pt-3 pb-1">
+              <h3 className="text-sm font-semibold truncate">{a.title}</h3>
+              <p className="text-xs text-[var(--color-muted-foreground)] mt-0.5">by {a.artist}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function HomePage() {
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
