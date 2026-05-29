@@ -218,3 +218,44 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
+
+/* ============ Horizontal Rail ============ */
+.rail {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  scroll-padding-left: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.rail::-webkit-scrollbar { height: 6px; }
+.rail::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
+.rail::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
+
+.rail-card {
+  width: 280px;
+  border-radius: 12px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rail-card:hover { transform: translateY(-4px); }
+
+.rail-card-media {
+  position: relative;
+  width: 280px;
+  height: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.rail-card:hover .rail-card-media {
+  border-color: color-mix(in oklab, var(--color-accent) 55%, var(--color-border));
+  box-shadow: 0 12px 32px -16px color-mix(in oklab, var(--color-accent) 45%, transparent);
+}
+
+@media (max-width: 640px) {
+  .rail-card, .rail-card-media { width: 240px; }
+  .rail-card-media { height: 300px; }
+}
+
