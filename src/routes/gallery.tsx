@@ -8,6 +8,7 @@ import galleryFigure from "@/assets/gallery-figure.jpg";
 import galleryCollage from "@/assets/gallery-collage.jpg";
 import galleryBronze from "@/assets/gallery-bronze.jpg";
 import galleryDoorway from "@/assets/gallery-doorway.jpg";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
