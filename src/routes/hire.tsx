@@ -57,6 +57,29 @@ const STUDIOS: RailItem[] = [
 ];
 
 function HirePage() {
+  const requireAuth = useRequireAuth();
+  const { user } = useAuth();
+  const [form, setForm] = useState({ title: "", discipline: "Concept Art", budget: "", deadline: "", message: "" });
+  const [busy, setBusy] = useState(false);
+
+  const submit = () => requireAuth(async () => {
+    if (!form.title.trim() || !form.message.trim()) return toast.error("Please fill in title and description.");
+    setBusy(true);
+    const { error } = await supabase.from("submissions").insert({
+      kind: "hire_brief",
+      name: user?.user_metadata?.first_name ?? user?.email ?? null,
+      email: user?.email ?? null,
+      subject: `Hire brief: ${form.title}`,
+      message: form.message,
+      payload: { ...form, recipient: "ibsenrubayita@gmail.com" },
+      user_id: user?.id ?? null,
+    });
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Brief submitted — we'll be in touch within 48h.");
+    setForm({ title: "", discipline: "Concept Art", budget: "", deadline: "", message: "" });
+  }, "post a brief");
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
