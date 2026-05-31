@@ -7,10 +7,15 @@ import {
   X,
   ChevronDown,
   Hexagon,
+  LogOut,
+  User as UserIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/hooks/use-theme";
+import { useAuth } from "@/hooks/use-auth";
+import { GlobalSearch } from "@/components/site/GlobalSearch";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type SubLink = { label: string; to: string; hash?: string; badge?: "SALE" | "NEW" };
 type NavItem = { label: string; to: string; items: SubLink[] };
