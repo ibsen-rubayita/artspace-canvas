@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { UserPlus, Building2, Palette, ArrowRight, Star } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { PageHero } from "@/components/site/PageHero";
 import { HorizontalRail, type RailItem } from "@/components/site/HorizontalRail";
+import { useRequireAuth } from "@/hooks/use-require-auth";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 
 import hireArtist from "@/assets/hire-artist.jpg";
 import hireStudio from "@/assets/hire-studio.jpg";
