@@ -157,79 +157,18 @@ function NavDropdown({ item }: { item: NavItem }) {
   );
 }
 
-function SearchBar() {
-  const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
-  const [checks, setChecks] = useState<Record<string, boolean>>({});
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setFocused(false);
-    };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, []);
-
+function SearchTrigger({ onOpen }: { onOpen: () => void }) {
   return (
-    <div ref={wrapRef} className="relative w-full max-w-[340px]">
-      <div
-        className={cn("flex items-center h-9 rounded-lg border px-3 transition-colors", "bg-[var(--color-surface)]")}
-        style={{ borderColor: focused ? "var(--color-accent)" : "var(--color-border)" }}
-      >
-        <Search className="h-4 w-4 text-[var(--color-muted-foreground)] shrink-0" />
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onFocus={() => setFocused(true)}
-          placeholder="Search ArtSpace"
-          className="bg-transparent outline-none border-0 px-2 text-sm w-full placeholder:text-[var(--color-muted-foreground)]"
-        />
-      </div>
-
-      {focused && (
-        <div className="dropdown-panel animate-dropdown absolute left-0 right-0 top-full mt-2 p-3 z-50">
-          <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted-foreground)] px-1 mb-1">
-            Recent searches
-          </div>
-          <div className="flex flex-col">
-            {RECENT.map((r) => (
-              <button
-                key={r}
-                onMouseDown={() => setValue(r)}
-                className="flex items-center gap-2 text-sm px-2 py-1.5 rounded-md hover:bg-[var(--color-surface-2)] text-left"
-              >
-                <Search className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" />
-                <span>{r}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="my-3 h-px bg-[var(--color-border)]" />
-
-          <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted-foreground)] px-1 mb-1">
-            Filter by
-          </div>
-          <div className="grid grid-cols-1 gap-0.5">
-            {SEARCH_FILTERS.map((f) => (
-              <label
-                key={f}
-                className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-[var(--color-surface-2)] cursor-pointer text-sm"
-              >
-                <input
-                  type="checkbox"
-                  checked={!!checks[f]}
-                  onChange={(e) => setChecks((c) => ({ ...c, [f]: e.target.checked }))}
-                  className="h-3.5 w-3.5 accent-[var(--color-accent)]"
-                />
-                <span>{f}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+    <button
+      onClick={onOpen}
+      className="relative w-full max-w-[340px] flex items-center h-9 rounded-lg border px-3 bg-[var(--color-surface)] text-left hover:border-[var(--color-accent)] transition-colors"
+      style={{ borderColor: "var(--color-border)" }}
+      aria-label="Open search"
+    >
+      <Search className="h-4 w-4 text-[var(--color-muted-foreground)] shrink-0" />
+      <span className="px-2 text-sm text-[var(--color-muted-foreground)] flex-1">Search ArtSpace</span>
+      <kbd className="hidden sm:inline-block text-[10px] px-1.5 py-0.5 rounded border" style={{ borderColor: "var(--color-border)" }}>⌘K</kbd>
+    </button>
   );
 }
 
