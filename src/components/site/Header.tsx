@@ -68,17 +68,6 @@ const NAV: NavItem[] = [
   },
 ];
 
-const SEARCH_FILTERS = [
-  "Search Artworks",
-  "Search Artists",
-  "Search Studios",
-  "Search Digital Products",
-  "Search Prints",
-  "Search Jobs",
-];
-
-const RECENT = ["concept art studios", "matte painting", "junior 3d artist", "sci-fi prints"];
-
 function Badge({ kind }: { kind: "SALE" | "NEW" }) {
   return (
     <span
