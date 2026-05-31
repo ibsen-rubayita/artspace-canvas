@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Play, Sparkles, Briefcase, Palette, Building2 } from "lucide-react";
+import { ArrowRight, Sparkles, Briefcase, Palette, Building2 } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { HorizontalRail, type RailItem } from "@/components/site/HorizontalRail";
+import { HeroMontage } from "@/components/site/HeroMontage";
 
-import heroImg from "@/assets/hero-showcase.jpg";
 import artFigure from "@/assets/gallery-figure.jpg";
 import artCollage from "@/assets/gallery-collage.jpg";
 import artBronze from "@/assets/gallery-bronze.jpg";
@@ -19,6 +19,9 @@ import art2 from "@/assets/art-2.jpg";
 import art5 from "@/assets/art-5.jpg";
 import art7 from "@/assets/art-7.jpg";
 import art8 from "@/assets/art-8.jpg";
+import art11 from "@/assets/art-11.jpg";
+import art14 from "@/assets/art-14.jpg";
+import art17 from "@/assets/art-17.jpg";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
