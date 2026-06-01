@@ -88,6 +88,18 @@ function JobCard({ job }: { job: Job }) {
       user_id: user?.id ?? null,
     });
     if (error) return toast.error(error.message);
+    fetch("/api/public/notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        kind: "job_application",
+        name: user?.user_metadata?.first_name ?? user?.email ?? undefined,
+        email: user?.email ?? undefined,
+        subject: `Application: ${job.title} at ${job.studio}`,
+        message: `${user?.email ?? "An applicant"} applied to ${job.title} at ${job.studio}.`,
+        meta: { job },
+      }),
+    }).catch(() => {});
     toast.success(`Application sent to ${job.studio}`);
   }, "apply for jobs");
 

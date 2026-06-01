@@ -16,6 +16,7 @@ import { Route as HireRouteImport } from './routes/hire'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicNotifyRouteImport } from './routes/api/public/notify'
 
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
@@ -52,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicNotifyRoute = ApiPublicNotifyRouteImport.update({
+  id: '/api/public/notify',
+  path: '/api/public/notify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
   '/shop': typeof ShopRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
   '/shop': typeof ShopRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
   '/shop': typeof ShopRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,8 +100,17 @@ export interface FileRouteTypes {
     | '/jobs'
     | '/learn'
     | '/shop'
+    | '/api/public/notify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/explore' | '/gallery' | '/hire' | '/jobs' | '/learn' | '/shop'
+  to:
+    | '/'
+    | '/explore'
+    | '/gallery'
+    | '/hire'
+    | '/jobs'
+    | '/learn'
+    | '/shop'
+    | '/api/public/notify'
   id:
     | '__root__'
     | '/'
@@ -102,6 +120,7 @@ export interface FileRouteTypes {
     | '/jobs'
     | '/learn'
     | '/shop'
+    | '/api/public/notify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,6 +131,7 @@ export interface RootRouteChildren {
   JobsRoute: typeof JobsRoute
   LearnRoute: typeof LearnRoute
   ShopRoute: typeof ShopRoute
+  ApiPublicNotifyRoute: typeof ApiPublicNotifyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -165,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/notify': {
+      id: '/api/public/notify'
+      path: '/api/public/notify'
+      fullPath: '/api/public/notify'
+      preLoaderRoute: typeof ApiPublicNotifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -176,17 +203,8 @@ const rootRouteChildren: RootRouteChildren = {
   JobsRoute: JobsRoute,
   LearnRoute: LearnRoute,
   ShopRoute: ShopRoute,
+  ApiPublicNotifyRoute: ApiPublicNotifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
