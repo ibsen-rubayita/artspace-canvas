@@ -76,6 +76,18 @@ function HirePage() {
     });
     setBusy(false);
     if (error) return toast.error(error.message);
+    fetch("/api/public/notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        kind: "hire_brief",
+        name: user?.user_metadata?.first_name ?? user?.email ?? undefined,
+        email: user?.email ?? undefined,
+        subject: `Hire brief: ${form.title}`,
+        message: form.message,
+        meta: { ...form },
+      }),
+    }).catch(() => {});
     toast.success("Brief submitted — we'll be in touch within 48h.");
     setForm({ title: "", discipline: "Concept Art", budget: "", deadline: "", message: "" });
   }, "post a brief");

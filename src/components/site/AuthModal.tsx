@@ -95,7 +95,6 @@ export function AuthModal() {
       },
     });
     if (!error) {
-      // Log notification submission (delivered to admin inbox via backend)
       await supabase.from("submissions").insert({
         kind: "signup_notification",
         name: `${firstName} ${lastName}`.trim(),
@@ -103,6 +102,17 @@ export function AuthModal() {
         subject: "New ArtSpace signup",
         message: `${firstName} ${lastName} just signed up.`,
       });
+      fetch("/api/public/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "signup_notification",
+          name: `${firstName} ${lastName}`.trim(),
+          email,
+          subject: "New ArtSpace signup",
+          message: `${firstName} ${lastName} (${email}) just signed up on ArtSpace.`,
+        }),
+      }).catch(() => {});
     }
     setBusy(false);
     if (error) return toast.error(error.message);
