@@ -6,7 +6,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  Hexagon,
   LogOut,
   User as UserIcon,
 } from "lucide-react";
@@ -86,16 +85,10 @@ function Logo() {
   return (
     <Link
       to="/"
-      className="flex items-center gap-2 select-none"
+      className="select-none font-serif text-[1.35rem] font-semibold tracking-tight leading-none"
       aria-label="ArtSpace — home"
     >
-      <span
-        className="grid place-items-center h-8 w-8 rounded-lg"
-        style={{ background: "linear-gradient(135deg, var(--color-accent), color-mix(in oklab, var(--color-accent) 60%, #000))" }}
-      >
-        <Hexagon className="h-4 w-4 text-white" strokeWidth={2.5} />
-      </span>
-      <span className="text-[15px] font-semibold tracking-tight">ArtSpace</span>
+      Art<span className="italic text-[var(--color-accent)]">Space</span>
     </Link>
   );
 }

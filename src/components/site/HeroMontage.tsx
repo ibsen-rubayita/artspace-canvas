@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Play } from "lucide-react";
 
 type Slide = { src: string; title?: string };
 
@@ -25,12 +24,6 @@ export function HeroMontage({ slides, interval = 3500 }: { slides: Slide[]; inte
         />
       ))}
 
-      {/* play badge */}
-      <div className="absolute inset-0 grid place-items-center pointer-events-none">
-        <span className="h-14 w-14 rounded-full grid place-items-center bg-white/15 backdrop-blur-md border border-white/30">
-          <Play className="h-5 w-5 text-white fill-white" />
-        </span>
-      </div>
 
       {/* progress bars */}
       <div className="absolute top-3 left-3 right-3 flex gap-1">

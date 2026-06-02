@@ -101,7 +101,12 @@ function HirePage() {
         icon={UserPlus}
         title={<>Celebrate the craft — <span className="text-[var(--color-accent)]">commission the artists</span> who move you.</>}
         description="Art appreciation begins with the makers. Post a brief, get matched with vetted artists and studios in under 48 hours, and bring your vision to life."
-        cta={{ label: "Post a brief" }}
+        cta={{
+          label: "Post a brief",
+          onClick: () => requireAuth(() => {
+            document.getElementById("post")?.scrollIntoView({ behavior: "smooth" });
+          }, "post a brief"),
+        }}
       />
 
       {/* How it works */}

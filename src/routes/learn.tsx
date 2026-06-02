@@ -5,6 +5,8 @@ import { Footer } from "@/components/site/Footer";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { PageHero } from "@/components/site/PageHero";
 import { HorizontalRail, type RailItem } from "@/components/site/HorizontalRail";
+import { useRequireAuth } from "@/hooks/use-require-auth";
+import { toast } from "sonner";
 
 import learnStudio from "@/assets/learn-studio.jpg";
 import learnCourse from "@/assets/learn-course.jpg";
@@ -57,6 +59,7 @@ const SCHOOLS: RailItem[] = [
 ];
 
 function LearnPage() {
+  const requireAuth = useRequireAuth();
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
@@ -66,7 +69,13 @@ function LearnPage() {
         icon={GraduationCap}
         title={<>Build your craft, <span className="text-[var(--color-accent)]">one lesson</span> at a time.</>}
         description="Self-paced courses taught by working artists, monthly challenges that sharpen your eye, and a directory of schools and training centers worldwide."
-        cta={{ label: "Start a free lesson" }}
+        cta={{
+          label: "Start a free lesson",
+          onClick: () => requireAuth(() => {
+            toast.success("Lesson unlocked — heading to your first class.");
+            document.getElementById("learning")?.scrollIntoView({ behavior: "smooth" });
+          }, "start a lesson"),
+        }}
       />
 
       {/* Feature row */}

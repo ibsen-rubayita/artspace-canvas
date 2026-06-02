@@ -150,6 +150,8 @@ function JobCard({ job }: { job: Job }) {
 }
 
 function JobsPage() {
+  const { user } = useAuth();
+  const requireAuth = useRequireAuth();
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
@@ -202,9 +204,11 @@ function JobsPage() {
         <HorizontalRail title="Hiring Studios" subtitle="Teams actively bringing on new artists." items={STUDIOS} />
       </div>
 
-      <div id="saved">
-        <HorizontalRail title="Your Saved Jobs" subtitle="Pick up where you left off." items={SAVED} />
-      </div>
+      {user && (
+        <div id="saved">
+          <HorizontalRail title="Your Saved Jobs" subtitle="Pick up where you left off." items={SAVED} />
+        </div>
+      )}
 
       {/* Resources */}
       <section id="resources" className="mx-auto max-w-[1400px] px-4 lg:px-6 pb-16">
@@ -231,7 +235,12 @@ function JobsPage() {
               <p className="text-sm text-[var(--color-muted-foreground)]">Post a role and reach 48,000+ artists this month.</p>
             </div>
           </div>
-          <a href="/hire" className="btn btn-cta px-5 py-2.5 text-sm">Post a job</a>
+          <button
+            onClick={() => requireAuth(() => { window.location.href = "/hire"; }, "post a job")}
+            className="btn btn-cta px-5 py-2.5 text-sm"
+          >
+            Post a job
+          </button>
         </div>
       </section>
 

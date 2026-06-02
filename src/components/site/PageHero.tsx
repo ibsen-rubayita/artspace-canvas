@@ -11,7 +11,7 @@ export function PageHero({
   title: React.ReactNode;
   description: string;
   icon?: LucideIcon;
-  cta?: { label: string; href?: string };
+  cta?: { label: string; href?: string; onClick?: () => void };
 }) {
   return (
     <section className="relative overflow-hidden">
@@ -34,9 +34,15 @@ export function PageHero({
 
         {cta && (
           <div className="mt-6">
-            <a href={cta.href ?? "#"} className="btn btn-cta px-5 py-2.5 text-sm">
-              {cta.label}
-            </a>
+            {cta.onClick ? (
+              <button onClick={cta.onClick} className="btn btn-cta px-5 py-2.5 text-sm">
+                {cta.label}
+              </button>
+            ) : (
+              <a href={cta.href ?? "#"} className="btn btn-cta px-5 py-2.5 text-sm">
+                {cta.label}
+              </a>
+            )}
           </div>
         )}
       </div>
