@@ -279,9 +279,9 @@ function UserMenu() {
         <div className="dropdown-panel animate-dropdown absolute right-0 top-full mt-2 min-w-[220px] py-2 z-50">
           <div className="px-3 py-2 text-xs text-[var(--color-muted-foreground)] truncate">{user.email}</div>
           <div className="my-1 h-px bg-[var(--color-border)]" />
-          <button className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-surface-2)]">
+          <Link to="/profile" onClick={() => setOpen(false)} className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-surface-2)]">
             <UserIcon className="h-4 w-4" /> Profile
-          </button>
+          </Link>
           <button
             onClick={async () => { await signOut(); setOpen(false); toast.success("Signed out"); }}
             className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-surface-2)]"
