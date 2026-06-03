@@ -196,8 +196,8 @@ function MobileDrawer({
     <div className="fixed inset-0 z-[60] lg:hidden">
       <div className="absolute inset-0 bg-black/60 animate-fade-in" onClick={onClose} />
       <aside
-        className="absolute left-0 top-0 h-full w-[88%] max-w-sm bg-[var(--color-background)] border-r animate-drawer flex flex-col"
-        style={{ borderColor: "var(--color-border)" }}
+        className="absolute left-0 top-0 h-full w-[88%] max-w-sm border-r animate-drawer flex flex-col"
+        style={{ borderColor: "var(--color-border)", background: "var(--color-background)" }}
       >
         <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: "var(--color-border)" }}>
           <Logo />
