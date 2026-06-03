@@ -103,16 +103,15 @@ function GalleryPage() {
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
 
-      {/* Attached sub-nav — no top border, sits flush under Header */}
+      {/* Attached sub-nav — centered under header, no scrollbars */}
       <div
         className="sticky top-14 z-40 backdrop-blur-md"
         style={{
           background: "color-mix(in oklab, var(--color-background) 88%, transparent)",
-          borderBottom: "1px solid var(--color-border)",
         }}
       >
-        <div className="mx-auto max-w-[1400px] px-4 lg:px-6 h-12 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-7 overflow-x-auto">
+        <div className="relative mx-auto max-w-[1400px] px-4 lg:px-6 py-4 flex items-center justify-center">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
             {navItem("Gallery", view === "gallery" && !focusArtist, () => handleNav("gallery"))}
             {navItem("Artists", view === "artists", () => handleNav("artists"))}
             {navItem("Studios", view === "studios", () => handleNav("studios"))}
@@ -121,7 +120,7 @@ function GalleryPage() {
           {!user && (
             <button
               onClick={() => openAuth("signup")}
-              className="hidden sm:inline-flex items-center px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] border"
+              className="hidden sm:inline-flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 items-center px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] border"
               style={{
                 background: "var(--color-foreground)",
                 color: "var(--color-background)",
