@@ -33,13 +33,12 @@ function ProfilePage() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase
-        .from("profiles")
+      const { data } = await (supabase.from("profiles") as any)
         .select("id, first_name, last_name, username, bio, website, avatar_url")
         .eq("id", user.id)
         .maybeSingle();
       setProfile(
-        data ?? {
+        (data as Profile | null) ?? {
           id: user.id,
           first_name: null,
           last_name: null,
