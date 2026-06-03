@@ -60,7 +60,7 @@ function ProfilePage() {
   const onSave = async () => {
     if (!profile) return;
     setSaving(true);
-    const { error } = await supabase.from("profiles").upsert({
+    const { error } = await (supabase.from("profiles") as any).upsert({
       id: user.id,
       first_name: profile.first_name,
       last_name: profile.last_name,
@@ -98,7 +98,7 @@ function ProfilePage() {
     }
     const { data } = supabase.storage.from("avatars").getPublicUrl(path);
     update({ avatar_url: data.publicUrl });
-    await supabase.from("profiles").upsert({
+    await (supabase.from("profiles") as any).upsert({
       id: user.id,
       avatar_url: data.publicUrl,
       updated_at: new Date().toISOString(),
