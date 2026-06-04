@@ -395,6 +395,7 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
   );
 }
 
+function BlogsPage() {
   const [active, setActive] = useState<Post | null>(null);
   const [filter, setFilter] = useState<"All" | Post["tag"]>("All");
 
