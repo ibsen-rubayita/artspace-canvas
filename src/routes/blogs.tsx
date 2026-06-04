@@ -207,28 +207,89 @@ function PostCard({ post, onOpen }: { post: Post; onOpen: () => void }) {
   );
 }
 
+type Comment = { id: string; user_id: string; body: string; created_at: string };
+
 function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
+  const { user, openAuth } = useAuth();
   const [following, setFollowing] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [draft, setDraft] = useState("");
+  const [posting, setPosting] = useState(false);
+
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      const [{ count }, { data: cm }, likedRes] = await Promise.all([
+        supabase.from("blog_likes").select("*", { count: "exact", head: true }).eq("post_id", post.id),
+        supabase.from("blog_comments").select("id,user_id,body,created_at").eq("post_id", post.id).order("created_at", { ascending: false }),
+        user
+          ? supabase.from("blog_likes").select("post_id").eq("post_id", post.id).eq("user_id", user.id).maybeSingle()
+          : Promise.resolve({ data: null }),
+      ]);
+      if (cancel) return;
+      setLikeCount(count ?? 0);
+      setComments((cm as Comment[]) ?? []);
+      setLiked(!!(likedRes as any)?.data);
+    })();
+    return () => { cancel = true; };
+  }, [post.id, user?.id]);
 
   const onShare = async () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
-    const shareData = { title: post.title, text: post.excerpt, url };
     try {
       if (typeof navigator !== "undefined" && (navigator as any).share) {
-        await (navigator as any).share(shareData);
+        await (navigator as any).share({ title: post.title, text: post.excerpt, url });
       } else {
         await navigator.clipboard.writeText(url);
         toast.success("Link copied to clipboard");
       }
-    } catch {
-      /* user dismissed */
-    }
+    } catch { /* dismissed */ }
   };
 
   const onFollow = () => {
     setFollowing((v) => !v);
     toast.success(following ? `Unfollowed ${post.artist}` : `Following ${post.artist}`);
+  };
+
+  const onLike = async () => {
+    if (!user) { openAuth("signin"); return; }
+    const next = !liked;
+    setLiked(next);
+    setLikeCount((c) => c + (next ? 1 : -1));
+    const { error } = next
+      ? await supabase.from("blog_likes").insert({ post_id: post.id, user_id: user.id })
+      : await supabase.from("blog_likes").delete().eq("post_id", post.id).eq("user_id", user.id);
+    if (error) {
+      setLiked(!next);
+      setLikeCount((c) => c + (next ? -1 : 1));
+      toast.error(error.message);
+    }
+  };
+
+  const onComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) { openAuth("signin"); return; }
+    const body = draft.trim();
+    if (!body) return;
+    setPosting(true);
+    const { data, error } = await supabase
+      .from("blog_comments")
+      .insert({ post_id: post.id, user_id: user.id, body })
+      .select("id,user_id,body,created_at")
+      .single();
+    setPosting(false);
+    if (error) { toast.error(error.message); return; }
+    setComments((cs) => [data as Comment, ...cs]);
+    setDraft("");
+  };
+
+  const onDeleteComment = async (id: string) => {
+    const prev = comments;
+    setComments((cs) => cs.filter((c) => c.id !== id));
+    const { error } = await supabase.from("blog_comments").delete().eq("id", id);
+    if (error) { setComments(prev); toast.error(error.message); }
   };
 
   return (
@@ -272,17 +333,61 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
             <button onClick={onShare} className="btn btn-ghost inline-flex items-center gap-2">
               <Share2 className="h-4 w-4" /> Share
             </button>
-            <button
-              onClick={() => setLiked((v) => !v)}
-              className="btn btn-ghost inline-flex items-center gap-2"
-              aria-pressed={liked}
-            >
+            <button onClick={onLike} className="btn btn-ghost inline-flex items-center gap-2" aria-pressed={liked}>
               <Heart className={liked ? "h-4 w-4 fill-current text-[var(--color-accent)]" : "h-4 w-4"} />
-              {liked ? "Liked" : "Like"}
+              {likeCount}
             </button>
-            <button className="btn btn-ghost inline-flex items-center gap-2" onClick={() => toast.info("Comments coming soon")}>
-              <MessageCircle className="h-4 w-4" /> Comment
-            </button>
+            <span className="btn btn-ghost inline-flex items-center gap-2 pointer-events-none">
+              <MessageCircle className="h-4 w-4" /> {comments.length}
+            </span>
+          </div>
+
+          <div className="mt-6 pt-5 border-t" style={{ borderColor: "var(--color-border)" }}>
+            <h3 className="text-sm font-semibold mb-3">Comments</h3>
+            <form onSubmit={onComment} className="flex flex-col gap-2 mb-4">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={user ? "Share your thoughts…" : "Sign in to comment"}
+                disabled={!user || posting}
+                rows={2}
+                maxLength={2000}
+                className="w-full rounded-lg border px-3 py-2 text-sm bg-[var(--color-surface)] resize-none focus:outline-none focus:border-[var(--color-accent)]"
+                style={{ borderColor: "var(--color-border)" }}
+              />
+              <div className="flex justify-end">
+                {user ? (
+                  <button type="submit" disabled={!draft.trim() || posting} className="btn btn-cta px-4 py-1.5 text-sm">
+                    {posting ? "Posting…" : "Post comment"}
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => openAuth("signin")} className="btn btn-cta px-4 py-1.5 text-sm">
+                    Sign in to comment
+                  </button>
+                )}
+              </div>
+            </form>
+
+            {comments.length === 0 ? (
+              <p className="text-sm text-[var(--color-muted-foreground)]">No comments yet — be the first.</p>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {comments.map((c) => (
+                  <li key={c.id} className="rounded-lg border p-3" style={{ borderColor: "var(--color-border)" }}>
+                    <div className="flex items-center justify-between text-xs text-[var(--color-muted-foreground)] mb-1">
+                      <span className="font-mono">{c.user_id.slice(0, 8)}</span>
+                      <span>{new Date(c.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <p className="text-sm whitespace-pre-wrap">{c.body}</p>
+                    {user?.id === c.user_id && (
+                      <button onClick={() => onDeleteComment(c.id)} className="mt-2 text-xs text-[var(--color-muted-foreground)] hover:text-[var(--color-accent)]">
+                        Delete
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
@@ -290,7 +395,6 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
   );
 }
 
-function BlogsPage() {
   const [active, setActive] = useState<Post | null>(null);
   const [filter, setFilter] = useState<"All" | Post["tag"]>("All");
 
