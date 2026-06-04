@@ -219,14 +219,13 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
   const [posting, setPosting] = useState(false);
 
   useEffect(() => {
+    if (!user) { setLikeCount(0); setComments([]); setLiked(false); return; }
     let cancel = false;
     (async () => {
       const [{ count }, { data: cm }, likedRes] = await Promise.all([
         supabase.from("blog_likes").select("*", { count: "exact", head: true }).eq("post_id", post.id),
         supabase.from("blog_comments").select("id,user_id,body,created_at").eq("post_id", post.id).order("created_at", { ascending: false }),
-        user
-          ? supabase.from("blog_likes").select("post_id").eq("post_id", post.id).eq("user_id", user.id).maybeSingle()
-          : Promise.resolve({ data: null }),
+        supabase.from("blog_likes").select("post_id").eq("post_id", post.id).eq("user_id", user.id).maybeSingle(),
       ]);
       if (cancel) return;
       setLikeCount(count ?? 0);
