@@ -324,7 +324,7 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
 
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <button
-              onClick={onFollow}
+              onClick={() => { if (!user) { openAuth("signin"); return; } onFollow(); }}
               className={following ? "btn btn-ghost inline-flex items-center gap-2" : "btn btn-cta inline-flex items-center gap-2"}
             >
               {following ? <><UserCheck className="h-4 w-4" /> Following</> : <><UserPlus className="h-4 w-4" /> Follow {post.artist}</>}
@@ -332,60 +332,71 @@ function PostDialog({ post, onClose }: { post: Post; onClose: () => void }) {
             <button onClick={onShare} className="btn btn-ghost inline-flex items-center gap-2">
               <Share2 className="h-4 w-4" /> Share
             </button>
-            <button onClick={onLike} className="btn btn-ghost inline-flex items-center gap-2" aria-pressed={liked}>
-              <Heart className={liked ? "h-4 w-4 fill-current text-[var(--color-accent)]" : "h-4 w-4"} />
-              {likeCount}
-            </button>
-            <span className="btn btn-ghost inline-flex items-center gap-2 pointer-events-none">
-              <MessageCircle className="h-4 w-4" /> {comments.length}
-            </span>
+            {user && (
+              <>
+                <button onClick={onLike} className="btn btn-ghost inline-flex items-center gap-2" aria-pressed={liked}>
+                  <Heart className={liked ? "h-4 w-4 fill-current text-[var(--color-accent)]" : "h-4 w-4"} />
+                  {likeCount}
+                </button>
+                <span className="btn btn-ghost inline-flex items-center gap-2 pointer-events-none">
+                  <MessageCircle className="h-4 w-4" /> {comments.length}
+                </span>
+              </>
+            )}
           </div>
 
           <div className="mt-6 pt-5 border-t" style={{ borderColor: "var(--color-border)" }}>
             <h3 className="text-sm font-semibold mb-3">Comments</h3>
-            <form onSubmit={onComment} className="flex flex-col gap-2 mb-4">
-              <textarea
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder={user ? "Share your thoughts…" : "Sign in to comment"}
-                disabled={!user || posting}
-                rows={2}
-                maxLength={2000}
-                className="w-full rounded-lg border px-3 py-2 text-sm bg-[var(--color-surface)] resize-none focus:outline-none focus:border-[var(--color-accent)]"
-                style={{ borderColor: "var(--color-border)" }}
-              />
-              <div className="flex justify-end">
-                {user ? (
-                  <button type="submit" disabled={!draft.trim() || posting} className="btn btn-cta px-4 py-1.5 text-sm">
-                    {posting ? "Posting…" : "Post comment"}
-                  </button>
-                ) : (
-                  <button type="button" onClick={() => openAuth("signin")} className="btn btn-cta px-4 py-1.5 text-sm">
-                    Sign in to comment
-                  </button>
-                )}
+            {!user ? (
+              <div className="rounded-lg border p-5 text-center" style={{ borderColor: "var(--color-border)", background: "var(--color-surface)" }}>
+                <p className="text-sm text-[var(--color-muted-foreground)] mb-3">
+                  Sign in to like this post and read or write comments.
+                </p>
+                <button onClick={() => openAuth("signin")} className="btn btn-cta px-4 py-1.5 text-sm">
+                  Sign in
+                </button>
               </div>
-            </form>
-
-            {comments.length === 0 ? (
-              <p className="text-sm text-[var(--color-muted-foreground)]">No comments yet — be the first.</p>
             ) : (
-              <ul className="flex flex-col gap-3">
-                {comments.map((c) => (
-                  <li key={c.id} className="rounded-lg border p-3" style={{ borderColor: "var(--color-border)" }}>
-                    <div className="flex items-center justify-between text-xs text-[var(--color-muted-foreground)] mb-1">
-                      <span className="font-mono">{c.user_id.slice(0, 8)}</span>
-                      <span>{new Date(c.created_at).toLocaleDateString()}</span>
-                    </div>
-                    <p className="text-sm whitespace-pre-wrap">{c.body}</p>
-                    {user?.id === c.user_id && (
-                      <button onClick={() => onDeleteComment(c.id)} className="mt-2 text-xs text-[var(--color-muted-foreground)] hover:text-[var(--color-accent)]">
-                        Delete
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
+              <>
+                <form onSubmit={onComment} className="flex flex-col gap-2 mb-4">
+                  <textarea
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    placeholder="Share your thoughts…"
+                    disabled={posting}
+                    rows={2}
+                    maxLength={2000}
+                    className="w-full rounded-lg border px-3 py-2 text-sm bg-[var(--color-surface)] resize-none focus:outline-none focus:border-[var(--color-accent)]"
+                    style={{ borderColor: "var(--color-border)" }}
+                  />
+                  <div className="flex justify-end">
+                    <button type="submit" disabled={!draft.trim() || posting} className="btn btn-cta px-4 py-1.5 text-sm">
+                      {posting ? "Posting…" : "Post comment"}
+                    </button>
+                  </div>
+                </form>
+
+                {comments.length === 0 ? (
+                  <p className="text-sm text-[var(--color-muted-foreground)]">No comments yet — be the first.</p>
+                ) : (
+                  <ul className="flex flex-col gap-3">
+                    {comments.map((c) => (
+                      <li key={c.id} className="rounded-lg border p-3" style={{ borderColor: "var(--color-border)" }}>
+                        <div className="flex items-center justify-between text-xs text-[var(--color-muted-foreground)] mb-1">
+                          <span className="font-mono">{c.user_id.slice(0, 8)}</span>
+                          <span>{new Date(c.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <p className="text-sm whitespace-pre-wrap">{c.body}</p>
+                        {user.id === c.user_id && (
+                          <button onClick={() => onDeleteComment(c.id)} className="mt-2 text-xs text-[var(--color-muted-foreground)] hover:text-[var(--color-accent)]">
+                            Delete
+                          </button>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
           </div>
         </div>
