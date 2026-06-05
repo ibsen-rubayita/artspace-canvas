@@ -9,8 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SchoolsRouteImport } from './routes/schools'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SchoolsRouteImport } from './routes/schools'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as MagazineRouteImport } from './routes/magazine'
 import { Route as LearnRouteImport } from './routes/learn'
@@ -24,14 +24,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as ApiPublicNotifyRouteImport } from './routes/api/public/notify'
 
-const SchoolsRoute = SchoolsRouteImport.update({
-  id: '/schools',
-  path: '/schools',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SchoolsRoute = SchoolsRouteImport.update({
+  id: '/schools',
+  path: '/schools',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NetworkRoute = NetworkRouteImport.update({
@@ -104,8 +104,8 @@ export interface FileRoutesByFullPath {
   '/learn': typeof LearnRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
-  '/shop': typeof ShopRoute
   '/schools': typeof SchoolsRoute
+  '/shop': typeof ShopRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
@@ -119,8 +119,8 @@ export interface FileRoutesByTo {
   '/learn': typeof LearnRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
-  '/shop': typeof ShopRoute
   '/schools': typeof SchoolsRoute
+  '/shop': typeof ShopRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
@@ -136,8 +136,8 @@ export interface FileRoutesById {
   '/learn': typeof LearnRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
-  '/shop': typeof ShopRoute
   '/schools': typeof SchoolsRoute
+  '/shop': typeof ShopRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
@@ -153,8 +153,8 @@ export interface FileRouteTypes {
     | '/learn'
     | '/magazine'
     | '/network'
-    | '/shop'
     | '/schools'
+    | '/shop'
     | '/profile'
     | '/api/public/notify'
   fileRoutesByTo: FileRoutesByTo
@@ -168,8 +168,8 @@ export interface FileRouteTypes {
     | '/learn'
     | '/magazine'
     | '/network'
-    | '/shop'
     | '/schools'
+    | '/shop'
     | '/profile'
     | '/api/public/notify'
   id:
@@ -184,8 +184,8 @@ export interface FileRouteTypes {
     | '/learn'
     | '/magazine'
     | '/network'
-    | '/shop'
     | '/schools'
+    | '/shop'
     | '/_authenticated/profile'
     | '/api/public/notify'
   fileRoutesById: FileRoutesById
@@ -201,25 +201,25 @@ export interface RootRouteChildren {
   LearnRoute: typeof LearnRoute
   MagazineRoute: typeof MagazineRoute
   NetworkRoute: typeof NetworkRoute
-  ShopRoute: typeof ShopRoute
   SchoolsRoute: typeof SchoolsRoute
+  ShopRoute: typeof ShopRoute
   ApiPublicNotifyRoute: typeof ApiPublicNotifyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/schools': {
-      id: '/schools'
-      path: '/schools'
-      fullPath: '/schools'
-      preLoaderRoute: typeof SchoolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schools': {
+      id: '/schools'
+      path: '/schools'
+      fullPath: '/schools'
+      preLoaderRoute: typeof SchoolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/network': {
@@ -331,8 +331,8 @@ const rootRouteChildren: RootRouteChildren = {
   LearnRoute: LearnRoute,
   MagazineRoute: MagazineRoute,
   NetworkRoute: NetworkRoute,
-  ShopRoute: ShopRoute,
   SchoolsRoute: SchoolsRoute,
+  ShopRoute: ShopRoute,
   ApiPublicNotifyRoute: ApiPublicNotifyRoute,
 }
 export const routeTree = rootRouteImport
