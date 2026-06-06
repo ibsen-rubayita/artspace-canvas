@@ -20,6 +20,7 @@ export function HorizontalRail({
   title: string;
   subtitle?: string;
   items: RailItem[];
+  /** Pixels to scroll per chevron click. */
   step?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);

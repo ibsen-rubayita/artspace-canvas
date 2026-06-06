@@ -9,21 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SchoolsRouteImport } from './routes/schools'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as MagazineRouteImport } from './routes/magazine'
+import { Route as LearningRouteImport } from './routes/learning'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as HireRouteImport } from './routes/hire'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as BlogsRouteImport } from './routes/blogs'
+import { Route as ArtsRouteImport } from './routes/arts'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as ApiPublicNotifyRouteImport } from './routes/api/public/notify'
 
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -42,6 +50,11 @@ const NetworkRoute = NetworkRouteImport.update({
 const MagazineRoute = MagazineRouteImport.update({
   id: '/magazine',
   path: '/magazine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearningRoute = LearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnRoute = LearnRouteImport.update({
@@ -74,6 +87,11 @@ const BlogsRoute = BlogsRouteImport.update({
   path: '/blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtsRoute = ArtsRouteImport.update({
+  id: '/arts',
+  path: '/arts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -96,31 +114,37 @@ const ApiPublicNotifyRoute = ApiPublicNotifyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/arts': typeof ArtsRoute
   '/blogs': typeof BlogsRoute
   '/explore': typeof ExploreRoute
   '/gallery': typeof GalleryRoute
   '/hire': typeof HireRoute
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
+  '/learning': typeof LearningRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
   '/schools': typeof SchoolsRoute
   '/shop': typeof ShopRoute
+  '/tools': typeof ToolsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/arts': typeof ArtsRoute
   '/blogs': typeof BlogsRoute
   '/explore': typeof ExploreRoute
   '/gallery': typeof GalleryRoute
   '/hire': typeof HireRoute
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
+  '/learning': typeof LearningRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
   '/schools': typeof SchoolsRoute
   '/shop': typeof ShopRoute
+  '/tools': typeof ToolsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
@@ -128,16 +152,19 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/arts': typeof ArtsRoute
   '/blogs': typeof BlogsRoute
   '/explore': typeof ExploreRoute
   '/gallery': typeof GalleryRoute
   '/hire': typeof HireRoute
   '/jobs': typeof JobsRoute
   '/learn': typeof LearnRoute
+  '/learning': typeof LearningRoute
   '/magazine': typeof MagazineRoute
   '/network': typeof NetworkRoute
   '/schools': typeof SchoolsRoute
   '/shop': typeof ShopRoute
+  '/tools': typeof ToolsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/api/public/notify': typeof ApiPublicNotifyRoute
 }
@@ -145,47 +172,56 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/arts'
     | '/blogs'
     | '/explore'
     | '/gallery'
     | '/hire'
     | '/jobs'
     | '/learn'
+    | '/learning'
     | '/magazine'
     | '/network'
     | '/schools'
     | '/shop'
+    | '/tools'
     | '/profile'
     | '/api/public/notify'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/arts'
     | '/blogs'
     | '/explore'
     | '/gallery'
     | '/hire'
     | '/jobs'
     | '/learn'
+    | '/learning'
     | '/magazine'
     | '/network'
     | '/schools'
     | '/shop'
+    | '/tools'
     | '/profile'
     | '/api/public/notify'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/arts'
     | '/blogs'
     | '/explore'
     | '/gallery'
     | '/hire'
     | '/jobs'
     | '/learn'
+    | '/learning'
     | '/magazine'
     | '/network'
     | '/schools'
     | '/shop'
+    | '/tools'
     | '/_authenticated/profile'
     | '/api/public/notify'
   fileRoutesById: FileRoutesById
@@ -193,21 +229,31 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ArtsRoute: typeof ArtsRoute
   BlogsRoute: typeof BlogsRoute
   ExploreRoute: typeof ExploreRoute
   GalleryRoute: typeof GalleryRoute
   HireRoute: typeof HireRoute
   JobsRoute: typeof JobsRoute
   LearnRoute: typeof LearnRoute
+  LearningRoute: typeof LearningRoute
   MagazineRoute: typeof MagazineRoute
   NetworkRoute: typeof NetworkRoute
   SchoolsRoute: typeof SchoolsRoute
   ShopRoute: typeof ShopRoute
+  ToolsRoute: typeof ToolsRoute
   ApiPublicNotifyRoute: typeof ApiPublicNotifyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -234,6 +280,13 @@ declare module '@tanstack/react-router' {
       path: '/magazine'
       fullPath: '/magazine'
       preLoaderRoute: typeof MagazineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learning': {
+      id: '/learning'
+      path: '/learning'
+      fullPath: '/learning'
+      preLoaderRoute: typeof LearningRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn': {
@@ -276,6 +329,13 @@ declare module '@tanstack/react-router' {
       path: '/blogs'
       fullPath: '/blogs'
       preLoaderRoute: typeof BlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arts': {
+      id: '/arts'
+      path: '/arts'
+      fullPath: '/arts'
+      preLoaderRoute: typeof ArtsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -323,16 +383,19 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ArtsRoute: ArtsRoute,
   BlogsRoute: BlogsRoute,
   ExploreRoute: ExploreRoute,
   GalleryRoute: GalleryRoute,
   HireRoute: HireRoute,
   JobsRoute: JobsRoute,
   LearnRoute: LearnRoute,
+  LearningRoute: LearningRoute,
   MagazineRoute: MagazineRoute,
   NetworkRoute: NetworkRoute,
   SchoolsRoute: SchoolsRoute,
   ShopRoute: ShopRoute,
+  ToolsRoute: ToolsRoute,
   ApiPublicNotifyRoute: ApiPublicNotifyRoute,
 }
 export const routeTree = rootRouteImport

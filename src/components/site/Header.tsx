@@ -25,34 +25,23 @@ const NAV: NavItem[] = [
     to: "/explore",
     items: [
       { label: "Gallery", to: "/gallery" },
-      { label: "Blogs", to: "/blogs" },
-      { label: "Magazine", to: "/magazine" },
+      { label: "Blogs & Magazine", to: "/blogs" },
     ],
   },
   {
-    label: "Courses",
-    to: "/learn",
+    label: "Learning",
+    to: "/learning",
     items: [
-      { label: "Cartoon Characters", to: "/learn", hash: "cartoon" },
-      { label: "Anime Characters", to: "/learn", hash: "anime" },
-      { label: "Game Characters", to: "/learn", hash: "game" },
-      { label: "Professional Tools", to: "/learn", hash: "tools" },
-    ],
-  },
-  {
-    label: "Schools",
-    to: "/schools",
-    items: [
-      { label: "Schools & Ateliers", to: "/schools" },
-      { label: "Residencies", to: "/schools", hash: "residencies" },
+      { label: "Online Courses", to: "/learn" },
+      { label: "Schools & Training", to: "/schools" },
     ],
   },
   {
     label: "Shop",
-    to: "/shop",
+    to: "/tools",
     items: [
-      { label: "Tools", to: "/shop", hash: "tools", badge: "SALE" },
-      { label: "Arts Sales", to: "/shop", hash: "arts", badge: "NEW" },
+      { label: "Tools", to: "/tools", badge: "SALE" },
+      { label: "Arts Sales", to: "/arts", badge: "NEW" },
     ],
   },
   {
@@ -158,10 +147,10 @@ function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
-      className="h-9 w-9 grid place-items-center rounded-lg border hover:bg-[var(--color-surface)] transition-colors"
+      className="h-10 w-10 grid place-items-center rounded-lg border hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all duration-200"
       style={{ borderColor: "var(--color-border)" }}
     >
-      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {theme === "dark" ? <Sun className="h-[1.15rem] w-[1.15rem]" /> : <Moon className="h-[1.15rem] w-[1.15rem]" />}
     </button>
   );
 }

@@ -10,6 +10,7 @@ import hireStudio from "@/assets/hire-studio.jpg";
 import hireArtist from "@/assets/hire-artist.jpg";
 import jobsTeam from "@/assets/jobs-team.jpg";
 import learnStudio from "@/assets/learn-studio.jpg";
+import heroNetwork from "@/assets/hero-network.jpg";
 import art2 from "@/assets/art-2.jpg";
 import art5 from "@/assets/art-5.jpg";
 import art7 from "@/assets/art-7.jpg";
@@ -59,7 +60,19 @@ function NetworkPage() {
         description="Two sides of the same room. Browse open roles on the Jobs board, or post a brief and commission vetted artists from the Hiring page."
       />
 
-      {/* Two-side hub */}
+      {/* Network hero image */}
+      <section className="mx-auto max-w-[1400px] px-4 lg:px-6 pb-10">
+        <div className="card-surface overflow-hidden relative aspect-[21/9] group">
+          <img src={heroNetwork} alt="ArtSpace network — artists and studios collaborating" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+          <div className="absolute bottom-5 left-5 right-5 text-white max-w-md">
+            <div className="text-[11px] uppercase tracking-widest opacity-80">Inside the Network</div>
+            <h3 className="mt-1 text-xl sm:text-2xl font-semibold">48,000 artists, 1,200 studios, one room.</h3>
+          </div>
+        </div>
+      </section>
+
+
       <section className="mx-auto max-w-[1400px] px-4 lg:px-6 pb-12">
         <div className="grid md:grid-cols-2 gap-4">
           <Link to="/jobs" className="card-surface p-6 group hover:border-[var(--color-accent)] transition-colors">

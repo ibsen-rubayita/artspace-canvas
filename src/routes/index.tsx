@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Sparkles, Briefcase, Palette, Building2 } from "lucide-react";
+import { ArrowRight, Sparkles, Palette, GraduationCap, Wrench, Newspaper, Network as NetworkIcon } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
@@ -126,27 +126,51 @@ function HomePage() {
         />
       </section>
 
-      {/* QUICK ACCESS */}
+      {/* HIGHLIGHTS — image-led, with small bottom-left caption */}
       <section className="mx-auto max-w-[1400px] px-4 lg:px-6 pb-20">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight">Highlights</h2>
+            <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">Six ways to start using ArtSpace today.</p>
+          </div>
+        </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { icon: Palette, title: "Explore the Gallery", desc: "Hand-picked work from artists worldwide.", cta: "Browse gallery", href: "/explore" },
-            { icon: Briefcase, title: "Find a Job", desc: "Roles at the studios you admire.", cta: "View listings", href: "/jobs" },
-            { icon: Building2, title: "Hire a Studio", desc: "Vetted teams ready for production.", cta: "Post a brief", href: "/hire" },
+            { icon: Palette,       title: "Explore the Gallery", desc: "Hand-picked work from artists worldwide.", href: "/explore",  img: artFigure },
+            { icon: GraduationCap, title: "Learn your craft",    desc: "Online courses & in-person schools.",     href: "/learning", img: art11 },
+            { icon: Wrench,        title: "Shop the Tools",      desc: "Cameras, brushes, paints, tablets.",      href: "/tools",    img: art5 },
+            { icon: Palette,       title: "Arts Sales",          desc: "Original works, direct from the studio.", href: "/arts",     img: artMonolith },
+            { icon: Newspaper,     title: "Blogs & Magazine",    desc: "Stories, essays and studio visits.",      href: "/blogs",    img: artCollage },
+            { icon: NetworkIcon,   title: "Network",             desc: "Find a job · hire a studio.",             href: "/network",  img: artHero },
           ].map((c, i) => (
             <a
               key={c.title}
               href={c.href}
-              className="card-surface p-5 group hover:border-[var(--color-accent)] transition-colors animate-fade-up"
-              style={{ animationDelay: `${0.1 + i * 0.1}s` }}
+              className="card-surface relative overflow-hidden group hover:border-[var(--color-accent)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg animate-fade-up aspect-[5/4]"
+              style={{ animationDelay: `${0.05 + i * 0.06}s` }}
             >
-              <div className="h-9 w-9 rounded-lg grid place-items-center mb-4" style={{ background: "color-mix(in oklab, var(--color-accent) 18%, transparent)" }}>
+              <img
+                src={c.img}
+                alt=""
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+
+              {/* Top-right icon chip */}
+              <div className="absolute top-3 right-3 h-9 w-9 rounded-lg grid place-items-center backdrop-blur-md border" style={{ background: "color-mix(in oklab, var(--color-background) 60%, transparent)", borderColor: "color-mix(in oklab, var(--color-foreground) 20%, transparent)" }}>
                 <c.icon className="h-4 w-4 text-[var(--color-accent)]" />
               </div>
-              <h3 className="text-base font-semibold">{c.title}</h3>
-              <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">{c.desc}</p>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-sm text-[var(--color-accent)] group-hover:gap-2.5 transition-all">
-                {c.cta} <ArrowRight className="h-3.5 w-3.5" />
+
+              {/* Bottom-left small caption */}
+              <div className="absolute bottom-3 left-3 right-12 text-white">
+                <h3 className="text-base font-semibold leading-tight drop-shadow-sm">{c.title}</h3>
+                <p className="mt-0.5 text-[11px] leading-snug text-white/75 line-clamp-1">{c.desc}</p>
+              </div>
+
+              {/* Hover arrow */}
+              <span className="absolute bottom-3 right-3 h-7 w-7 rounded-full grid place-items-center bg-[var(--color-accent)] text-white opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
+                <ArrowRight className="h-3.5 w-3.5" />
               </span>
             </a>
           ))}
