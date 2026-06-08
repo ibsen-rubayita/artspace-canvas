@@ -7,6 +7,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "start": "bun dist/server/server.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."
@@ -85,8 +86,4 @@
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1"
   }
-"scripts": {
-  "dev": "bun run --hot src/server.ts",
-  "build": "vite build",
-  "start": "bun dist/server/server.js"
-}}
+}
