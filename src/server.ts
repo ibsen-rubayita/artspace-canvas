@@ -47,25 +47,3 @@ export default {
     }
   },
 };
-
-// ✅ Bun HTTP listener for Render
-const port = Number(process.env.PORT) || 3000;
-
-Bun.serve({
-  port,
-  async fetch(request: Request) {
-    try {
-      const handler = await getServerEntry();
-      const response = await handler.fetch(request, {}, {});
-      return await normalizeCatastrophicSsrResponse(response);
-    } catch (error) {
-      console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
-    }
-  },
-});
-
-console.log(`✅ Server listening on port ${port}`);
